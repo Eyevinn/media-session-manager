@@ -38,6 +38,20 @@ export class MediaSessionManager {
     metadata: MediaSessionMetadata,
     isLive?: boolean
   ) {
+    if (!(videoElement instanceof HTMLVideoElement)) {
+      throw new Error(
+        "[MediaSessionManager] videoElement must be an HTMLVideoElement"
+      );
+    }
+    if (
+      !metadata ||
+      !metadata.title ||
+      !metadata.siteName ||
+      !metadata.artwork
+    ) {
+      throw new Error("[MediaSessionManager] metadata must be provided");
+    }
+
     this.videoElement = videoElement;
     this.metadata = metadata;
     this.isLive = isLive;
