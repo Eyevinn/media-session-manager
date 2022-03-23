@@ -5,6 +5,11 @@ A small package to apply data as well as initiate handlers for the [Media Sessio
 
 ![media session manager visualisation](https://web-dev.imgix.net/image/admin/qwTz64KKq4rq7WeA3rlT.jpg?auto=format&w=1600)
 
+**Valuable Resources**
+
+- [Customize media notifications and playback controls with the Media Session API](https://web.dev/media-session/)
+- [MDN MediaSession API Documentation](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession)
+
 ## Simple Usage
 
 ```js
