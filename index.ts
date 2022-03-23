@@ -97,8 +97,9 @@ export class MediaSessionManager {
     try {
       navigator.mediaSession.setActionHandler(
         ActionHandlers.SEEK_BACKWARD,
-        () => {
-          this.videoElement.currentTime -= 15;
+        (details: MediaSessionActionDetails) => {
+          this.videoElement.currentTime -= details.seekOffset || 15;
+          this.updatePlaybackState();
         }
       );
     } catch (e) {
@@ -107,8 +108,9 @@ export class MediaSessionManager {
     try {
       navigator.mediaSession.setActionHandler(
         ActionHandlers.SEEK_FORWARD,
-        () => {
-          this.videoElement.currentTime += 15;
+        (details: MediaSessionActionDetails) => {
+          this.videoElement.currentTime += details.seekOffset || 15;
+          this.updatePlaybackState();
         }
       );
     } catch (e) {
@@ -120,6 +122,7 @@ export class MediaSessionManager {
         ActionHandlers.SEEKTO,
         (details: MediaSessionActionDetails) => {
           this.videoElement.currentTime = details.seekTime;
+          this.updatePlaybackState();
         }
       );
     } catch (e) {
@@ -128,20 +131,24 @@ export class MediaSessionManager {
   }
 
   private setupStateReporter(): void {
-    if (navigator.mediaSession && navigator.mediaSession.setPositionState) {
-      this.videoElement.addEventListener("timeupdate", () => {
-        if (
-          !this.isLive &&
-          this.videoElement.duration > 0 &&
-          this.videoElement.currentTime &&
-          this.videoElement.currentTime <= this.videoElement.duration
-        ) {
-          navigator.mediaSession.setPositionState({
-            duration: this.videoElement.duration,
-            position: this.videoElement.currentTime,
-          });
-        }
-      });
-    }
+    this.videoElement.addEventListener("timeupdate", () => {
+      if (
+        !this.isLive &&
+        this.videoElement.duration > 0 &&
+        this.videoElement.currentTime &&
+        this.videoElement.currentTime <= this.videoElement.duration
+      ) {
+        this.updatePlaybackState();
+      }
+    });
+  }
+
+  private updatePlaybackState(): void {
+    if (!navigator.mediaSession || !navigator.mediaSession.setPositionState)
+      return;
+    navigator.mediaSession.setPositionState({
+      duration: this.videoElement.duration,
+      position: this.videoElement.currentTime,
+    });
   }
 }
