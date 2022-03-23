@@ -33,6 +33,29 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 ```
 
+The constructor takes three arguments
+
+- **video element**
+- [**metadata**](#metadata)
+- **isLive**, boolean that defaults to false (being vod)
+
+### Metadata
+
+```typescript
+interface MediaSessionMetadata {
+  title: string;
+  siteName: string;
+  pageName?: string;
+  artwork: Artwork[];
+}
+
+interface Artwork {
+  src: string;
+  sizes: string; // ex "512x512" as string, width x height
+  type: "image/jpeg" | "image/png";
+}
+```
+
 ## About Eyevinn Technology
 
 Eyevinn Technology is an independent consultant firm specialized in video and streaming. Independent in the sense that we are not commercially tied to any platform or technology vendor.
